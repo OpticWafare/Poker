@@ -1,7 +1,9 @@
 public class PokerTest {
 
-	static double anzahlkarten = 52;
-
+	static int anzahlKarteProFarbe = 13;
+	static int anzahlFarben = 4; 
+	static int anzahlKarten = anzahlKarteProFarbe * anzahlFarben;
+	
 	public static int[] poker = new int[52];
 	public static int[] gezogeneKarten = new int[5];
 
@@ -37,7 +39,7 @@ public class PokerTest {
 	 */
 	static int farbeKarten(int karte)
 	{
-		int farbe = karte / 13;
+		int farbe = karte / anzahlKarteProFarbe;
 		return farbe;
 	}
 
@@ -46,12 +48,12 @@ public class PokerTest {
 	 * @param karte Kartenzahl (0-51)
 	 * @return Nummer der Karte (1-13)
 	 */
-	static int nummberKarte(int karte)
+	static int numberKarte(int karte)
 	{
 	for(int i = 0; i < 4; i++) {
 			
-			if((karte >= (i*13)) && (karte < ((i+1)*13))) {
-				karte -= (i*13);
+			if((karte >= (i*anzahlKarteProFarbe)) && (karte < ((i+1)*anzahlKarteProFarbe))) {
+				karte -= (i*anzahlKarteProFarbe);
 				karte++;
 				return karte;
 			}
@@ -100,7 +102,7 @@ public class PokerTest {
 		int[] gezogeneNummern = new int[gezogeneKarten.length];
 		// Alle absoluten Kartenzahlen (0-51) in Kartennummern (0-9, B, D, K, A) umwandeln
 		for(int i = 0; i < gezogeneNummern.length; i++) {
-			gezogeneNummern[i] = nummberKarte(gezogeneKarten[i]);	// Jede Zahl aus dem Array mit der nummberKarte
+			gezogeneNummern[i] = numberKarte(gezogeneKarten[i]);	// Jede Zahl aus dem Array mit der nummberKarte
 																	// Methode umwandeln und in seperatem Array speichern
 		}
 		// Alle Karttennummern muessen der Groesse nach aufsteigend geordnet sein
@@ -162,13 +164,13 @@ public class PokerTest {
 	 * @param gezogeneKarten Die Karten (0-51), die auf eine Strasse geürueft werden sollen
 	 * @return true: angegebene Karten sind in einer Strasse; false: keine strasse
 	 */
-	static boolean CheckStraight(int[] gezogeneKarten)
+	static boolean checkStraight(int[] gezogeneKarten)
 	{
 		// Kartenzahlen (0-51) werden in Kartennummern umgewandelt (2-9, B, D, K, A)
 		int[] gezogeneNummern = new int[5];
 		for(int i = 0; i<gezogeneKarten.length; i++)
 		{
-			gezogeneNummern[i] = nummberKarte(gezogeneKarten[i]);
+			gezogeneNummern[i] = numberKarte(gezogeneKarten[i]);
 		}
 		// Kartennummern werden der Groesse nach aufsteigend sortiert
 		// Dadurch liegt (falls vorhanden) eine Strasse schon in der richtigen Reihenfolge vor
@@ -203,15 +205,15 @@ public class PokerTest {
 	 * @param gezogeneKarten Die Karten (0-51), die auf eine Strasse geürueft werden sollen
 	 * @return true: angegebene Karten sind ein RoyalFlush; false: kein RoyalFlush
 	 */
-	static boolean CheckRoyalFlush(int [] gezogeneKarten)
+	static boolean checkRoyalFlush(int [] gezogeneKarten)
 	{
 		int[] gezogeneNummern = new int[5];
 		// Bedingung wird erst ausgeführt, wenn gezogeneKarten ein StraightFlush ergeben
-		if(CheckStraightFlush(gezogeneKarten))
+		if(checkStraightFlush(gezogeneKarten))
 		{
 			for (int i = 0; i < gezogeneKarten.length; i++) {
 				// Umwandlung der gezogenenKarten in Wert der Karten (2,3,4,5,6,7,8,9,10,Bube,Dame,König und Ass)
-				gezogeneNummern[i] = nummberKarte(gezogeneKarten[i]);
+				gezogeneNummern[i] = numberKarte(gezogeneKarten[i]);
 			}
 			// Kartenwerte werden der Größe nach aufsteigend geordnet
 			gezogeneKartenOrdnen(gezogeneNummern);
@@ -231,7 +233,7 @@ public class PokerTest {
 	 * @param gezogeneKarten Array mit absoluten Kartenzahlen (0-51)
 	 * @return true: Alle Karten im Parameter-Array haben die gleiche Farbe; false: Nicht alle haben die gleiche Farbe
 	 */
-	static boolean CheckFlush(int[] gezogeneKarten)
+	static boolean checkFlush(int[] gezogeneKarten)
 	{
 		// Checkt ob die Farbe jedes Array-Eintrages mit der Farbe des ersten Array-Eintrages uebereinstimmt
 		// Wenn jede Karte die gleiche Farbe wie die erste Karte hat, haben alle die gleiche Farbe
@@ -252,13 +254,13 @@ public class PokerTest {
 	 * @param gezogeneKarten Array mit absoluten Kartenzahlen (0-51)
 	 * @return true: Alle Karten im Parameter-Array haben die gleiche Farbe und ergeben eine Straße; false: Nicht alle haben die gleiche Farbe oder ergeben keine Straße 
 	 */
-	static boolean CheckStraightFlush(int [] gezogeneKarten)
+	static boolean checkStraightFlush(int [] gezogeneKarten)
 	{
 		// Methoden müssen in Variable gespeichert werden, da sonst bei nicht eintreten eines Falles die andere Methode nicht aufgerufen wird
 		// Weil CheckRoyalFlush CheckStraightFlush aufruft und CheckStraightFlush CheckFlush und CheckStraight aufruft kann es zu einem Problem kommen da eine der beiden
 		// Methoden nich aufgerufen werden könnte, jedoch aufgerufen werden müssen, da CheckStraight und CheckFlush nicht einzeln aufgerufen werden 
-		boolean b1 = CheckFlush(gezogeneKarten);
-		boolean b2 = CheckStraight(gezogeneKarten);
+		boolean b1 = checkFlush(gezogeneKarten);
+		boolean b2 = checkStraight(gezogeneKarten);
 		if(b1 && b2)
 		{
 			System.out.println("Es gibt ein Straight Flush!");
@@ -292,16 +294,16 @@ public class PokerTest {
 	 * @param gezogeneKarten Array mit absoluten Kartenzahlen (0-51)
 	 * @return highestCard: Höchste Karte wird zurückgegeben; 
 	 */
-	static int CheckHighestCard(int [] gezogeneKarten)
+	static int checkHighestCard(int [] gezogeneKarten)
 	{
 		// Die highestCard Varibale wird auf den ersten Kartenwert vom Array gezogeneKarten gesetzt
-		int highestCard = nummberKarte(gezogeneKarten[0]);
+		int highestCard = numberKarte(gezogeneKarten[0]);
 		// For Schleife beginnt bei Wert 1, da highestCard schon den Wert von gezogneKarten[0] angenommen hat
 		for (int i = 1; i < gezogeneKarten.length; i++) {
 			// Überprüft, ob ein Kartenwert von gezogenKarten höher ist als der Wert von highestCard und überschreibt diesen, wenn dies der Fall ist
-			if(highestCard < nummberKarte(gezogeneKarten[i]))
+			if(highestCard < numberKarte(gezogeneKarten[i]))
 			{
-				highestCard = nummberKarte(gezogeneKarten[i]);
+				highestCard = numberKarte(gezogeneKarten[i]);
 			}
 		}
 		System.out.println("Die höchste Karte ist: " + highestCard + " !");
@@ -312,23 +314,23 @@ public class PokerTest {
 		arrayfuellen();
 		information();
 		//randomNumberundPaar();
-		int a = (int) ((anzahlkarten) * Math.random());
+		int a = (int) ((anzahlKarten) * Math.random());
 		gezogeneKarten[0] = poker[a];
 		swapRandomNumbers(poker, a, 51);
 		System.out.println(a);
-		int b = (int) ((anzahlkarten--) * Math.random());
+		int b = (int) ((anzahlKarten--) * Math.random());
 		gezogeneKarten[1] = poker[b];
 		swapRandomNumbers(poker, b, 50);
 		System.out.println(b);
-		int c = (int)((anzahlkarten--) * Math.random());
+		int c = (int)((anzahlKarten--) * Math.random());
 		gezogeneKarten[2] = poker[c];
 		swapRandomNumbers(poker, c, 49);
 		System.out.println(c);
-		int d = (int) ((anzahlkarten--) * Math.random());
+		int d = (int) ((anzahlKarten--) * Math.random());
 		gezogeneKarten[3] = poker[d];
 		swapRandomNumbers(poker, d, 48);
 		System.out.println(d);
-		int e = (int) ((anzahlkarten--) * Math.random());
+		int e = (int) ((anzahlKarten--) * Math.random());
 		gezogeneKarten[4] = poker[e];
 		swapRandomNumbers(poker, e, 47);
 		System.out.println(e);
@@ -405,15 +407,15 @@ public class PokerTest {
 		//CheckFlush(gezogeneKarten);
 		//CheckStrasse(gezogeneKarten);
 		//CheckStrasseundFlush(gezogeneKarten);
-		CheckRoyalFlush(gezogeneKarten);
-		CheckHighestCard(gezogeneKarten);
+		checkRoyalFlush(gezogeneKarten);
+		checkHighestCard(gezogeneKarten);
 		//getValue(poker);
 		//System.out.println(anzahlkarten);
 		System.out.println("Wert der gezogenen Karten: ");
 		for(int i = 0; i<gezogeneKarten.length; i++)
 		{
 
-			System.out.print(nummberKarte(gezogeneKarten[i]) + " ");
+			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
 		}
 		System.out.println("\n");
 		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
