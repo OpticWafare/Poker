@@ -6,6 +6,16 @@ public class PokerTest {
 	
 	public static int[] poker = new int[52];
 	public static int[] gezogeneKarten = new int[5];
+	
+	static int anzPair = 0;
+	static int anzTripple = 0;
+	static int anzFourOfAKind = 0;
+	static int anzFullHouse = 0;
+	static int anzStraight = 0;
+	static int anzFlush = 0;
+	static int anzStraightFlush = 0;
+	static int anzRoyalFlush = 0;
+	
 
 	static void arrayfuellen()
 	{
@@ -13,7 +23,7 @@ public class PokerTest {
 		for(int i = 0; i<poker.length; i++)
 		{
 			poker[i] = i;
-			System.out.print(poker[i] + " ");
+			//System.out.print(poker[i] + " ");
 		}
 	}
 
@@ -150,11 +160,15 @@ public class PokerTest {
 		if(anzDrillinge == 1 && anzZwillinge == 1)
 		{
 			System.out.println("Es gibt ein Full House!");
+			anzFullHouse++;
 		}
 		
 		System.out.println("Zwillinge: " + anzZwillinge);
+		anzPair += anzZwillinge;
 		System.out.println("Drillinge: " + anzDrillinge);
+		anzTripple += anzDrillinge;
 		System.out.println("Vierlinge: " + anzVierlinge);
+		anzFourOfAKind += anzVierlinge;
 		
 		
 	}
@@ -182,14 +196,15 @@ public class PokerTest {
 			// Wenn man die derzeitige Karte um 1 erhoeht, muss sie gleich sein wie die naechste Karte
 			// Trifft diese Bedingung auch nur ein einziges Mal zu, wird die Methode abgebrochen und "Keine Strasse" zurueckgegeben
 			if((gezogeneNummern[i]+1) != gezogeneNummern[i+1])
-			{	// Es wird überprüft, ob es sich um letzten Schleifendurchlauf handelt
+			{	// Es wird überprüft, ob es sich um letzten Schleifendurchlauf handelt (Vergleich 3. mit 4.ten Index)
 				if(gezogeneNummern.length-2 == i)
 				{	// Es wird überprüft, ob die letzte Karte in gezogeneNummern ein Ass ist und ob die erste Karte 2 ist
 					// Tritt nur auf, wenn bis zum letztem Kartenwert eine durchgehende Reihenfolge vorkommt und erst die letzte Kartenummer eine Ass ist
 					// Einzige Möglichkeit ist: 2 3 4 5 13
-					if((gezogeneNummern[4] == 13) && (gezogeneNummern[0] == 1))
+					if((gezogeneNummern[4] == 13) && (gezogeneNummern[0] == 1)) // Wert 1 = Karte 2
 					{
 						System.out.println("Es gibt eine Straße!");
+						anzStraight++;
 						return true;
 					}
 				}
@@ -201,7 +216,7 @@ public class PokerTest {
 	}
 
 	/**
-	 * Checkt ob es ein StraightFlush ist und die Karten mit denen er gebildet wurde die höchsten Karten sind
+	 * Checkt ob es ein royalFlush ist und die Karten mit denen er gebildet wurde die höchsten Karten sind
 	 * @param gezogeneKarten Die Karten (0-51), die auf eine Strasse geürueft werden sollen
 	 * @return true: angegebene Karten sind ein RoyalFlush; false: kein RoyalFlush
 	 */
@@ -221,6 +236,7 @@ public class PokerTest {
 			if(gezogeneNummern[0] == 9)
 			{
 				System.out.println("Es gibt ein Royal Flush!");
+				anzRoyalFlush++;
 				return true;
 			}
 		}
@@ -241,6 +257,7 @@ public class PokerTest {
 				farbeKarten(gezogeneKarten[0]) == farbeKarten(gezogeneKarten[3]) && farbeKarten(gezogeneKarten[0]) == farbeKarten(gezogeneKarten[4]))
 		{
 			System.out.println("Es gibt ein Flush!");
+			anzFlush++;
 			return true;
 		}
 		else{
@@ -264,6 +281,7 @@ public class PokerTest {
 		if(b1 && b2)
 		{
 			System.out.println("Es gibt ein Straight Flush!");
+			anzStraightFlush++;
 			return true;
 		}
 		return false;
@@ -309,11 +327,9 @@ public class PokerTest {
 		System.out.println("Die höchste Karte ist: " + highestCard + " !");
 		return highestCard;
 	}
-	public static void main(String[] args)
+	
+	static void kartenZiehen()
 	{
-		arrayfuellen();
-		information();
-		//randomNumberundPaar();
 		int a = (int) ((anzahlKarten) * Math.random());
 		gezogeneKarten[0] = poker[a];
 		swapRandomNumbers(poker, a, 51);
@@ -336,10 +352,51 @@ public class PokerTest {
 		System.out.println(e);
 
 
-
 		System.out.println();
 		System.out.println("Sie haben folgende Karten gezogen: " 
 				+ gezogeneKarten[0] + " " + gezogeneKarten[1] + " " + gezogeneKarten[2] + " " + gezogeneKarten[3] + " " + gezogeneKarten[4]);
+	}
+	
+	static void durchlaufe(int anz)
+	{
+		for (int i = 0; i < anz; i++) {
+			arrayfuellen();
+			kartenZiehen();
+			System.out.println("Wert der gezogenen Karten: ");
+			for(int j = 0; j<gezogeneKarten.length; j++)
+			{
+
+				System.out.print(numberKarte(gezogeneKarten[j]) + " ");
+			}
+			System.out.println("\n");
+			checkRoyalFlush(gezogeneKarten);
+			checkHighestCard(gezogeneKarten);
+//			getValue(poker);
+			checkPaarTrippleVierlingFullHouse(gezogeneKarten);
+		}
+		System.out.println();
+		System.out.println("Die Anzahl der Paare bei " + anz + " Durchläufen ist " + anzPair);
+		System.out.println("Die Anzahl der Drillinge bei " + anz + " Durchläufen ist " + anzTripple);
+		System.out.println("Die Anzahl der Vierlinge bei " + anz + " Durchläufen ist " + anzFourOfAKind);
+		System.out.println("Die Anzahl der FullHouses bei " + anz + " Durchläufen ist " + anzFullHouse);
+		System.out.println("Die Anzahl der Straßen bei " + anz + " Durchläufen ist " + anzStraight);
+		System.out.println("Die Anzahl der Flushs bei " + anz + " Durchläufen ist " + anzFlush);
+		System.out.println("Die Anzahl der StraightFlushs bei " + anz + " Durchläufen ist " + anzStraightFlush);
+		System.out.println("Die Anzahl der RoyalFlushs bei " + anz + " Durchläufen ist " + anzRoyalFlush);
+		
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		
+		durchlaufe(10);
+//		arrayfuellen();
+//		information();
+//		kartenZiehen();
+		
+		//randomNumberundPaar();
+		
 
 		// Straight Flush
 //		gezogeneKarten[0] = 12;
@@ -403,21 +460,24 @@ public class PokerTest {
 //		gezogeneKarten[2] = 23;
 //		gezogeneKarten[3] = 47;
 //		gezogeneKarten[4] = 18;
+		
+		
+		
 	
 		//CheckFlush(gezogeneKarten);
 		//CheckStrasse(gezogeneKarten);
 		//CheckStrasseundFlush(gezogeneKarten);
-		checkRoyalFlush(gezogeneKarten);
-		checkHighestCard(gezogeneKarten);
-		//getValue(poker);
+//		checkRoyalFlush(gezogeneKarten);
+//		checkHighestCard(gezogeneKarten);
+//		getValue(poker);
 		//System.out.println(anzahlkarten);
-		System.out.println("Wert der gezogenen Karten: ");
-		for(int i = 0; i<gezogeneKarten.length; i++)
-		{
-
-			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
-		}
-		System.out.println("\n");
-		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
+//		System.out.println("Wert der gezogenen Karten: ");
+//		for(int i = 0; i<gezogeneKarten.length; i++)
+//		{
+//
+//			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
+//		}
+//		System.out.println("\n");
+//		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
 	}
 }
