@@ -390,10 +390,10 @@ public class PokerTest {
 	public static void main(String[] args)
 	{
 		
-		durchlaufe(10);
-//		arrayfuellen();
+	//	durchlaufe(10);
+		arrayfuellen();
 //		information();
-//		kartenZiehen();
+		kartenZiehen();
 		
 		//randomNumberundPaar();
 		
@@ -411,7 +411,7 @@ public class PokerTest {
 //		gezogeneKarten[2] = 24;
 //		gezogeneKarten[3] = 21;
 //		gezogeneKarten[4] = 22;
-		
+
 		//Flush
 //		gezogeneKarten[0] = 5;
 //		gezogeneKarten[1] = 0;
@@ -440,6 +440,13 @@ public class PokerTest {
 //		gezogeneKarten[3] = 16;
 //		gezogeneKarten[4] = 27;
 		
+		//Two-Pair
+//		gezogeneKarten[0] = 1;
+//		gezogeneKarten[1] = 14;
+//		gezogeneKarten[2] = 26;
+//		gezogeneKarten[3] = 39;
+//		gezogeneKarten[4] = 7;
+		
 		//Drilling
 //		gezogeneKarten[0] = 0;
 //		gezogeneKarten[1] = 13;
@@ -447,7 +454,7 @@ public class PokerTest {
 //		gezogeneKarten[3] = 5;
 //		gezogeneKarten[4] = 2;
 		
-		//Vierling
+//		Vierling
 //		gezogeneKarten[0] = 0;
 //		gezogeneKarten[1] = 13;
 //		gezogeneKarten[2] = 26;
@@ -464,20 +471,20 @@ public class PokerTest {
 		
 		
 	
-		//CheckFlush(gezogeneKarten);
-		//CheckStrasse(gezogeneKarten);
-		//CheckStrasseundFlush(gezogeneKarten);
-//		checkRoyalFlush(gezogeneKarten);
-//		checkHighestCard(gezogeneKarten);
-//		getValue(poker);
-		//System.out.println(anzahlkarten);
-//		System.out.println("Wert der gezogenen Karten: ");
-//		for(int i = 0; i<gezogeneKarten.length; i++)
-//		{
-//
-//			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
-//		}
-//		System.out.println("\n");
-//		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
+		//checkFlush(gezogeneKarten);
+		//checkStraight(gezogeneKarten);
+		//checkFlush(gezogeneKarten);
+		checkRoyalFlush(gezogeneKarten);
+		checkHighestCard(gezogeneKarten);
+		//getValue(poker);
+		System.out.println(anzahlKarten);
+		System.out.println("Wert der gezogenen Karten: ");
+		for(int i = 0; i<gezogeneKarten.length; i++)
+		{
+
+			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
+		}
+		System.out.println("\n");
+		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
 	}
 }
