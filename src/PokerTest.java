@@ -60,7 +60,7 @@ public class PokerTest {
 	 */
 	static int numberKarte(int karte)
 	{
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < anzahlFarben; i++) {
 			
 			if((karte >= (i*anzahlKarteProFarbe)) && (karte < ((i+1)*anzahlKarteProFarbe))) {
 				karte -= (i*anzahlKarteProFarbe);
@@ -181,7 +181,7 @@ public class PokerTest {
 	static boolean checkStraight(int[] gezogeneKarten)
 	{
 		// Kartenzahlen (0-51) werden in Kartennummern umgewandelt (2-9, B, D, K, A)
-		int[] gezogeneNummern = new int[5];
+		int[] gezogeneNummern = new int[gezogeneKarten.length];
 		for(int i = 0; i<gezogeneKarten.length; i++)
 		{
 			gezogeneNummern[i] = numberKarte(gezogeneKarten[i]);
@@ -222,7 +222,7 @@ public class PokerTest {
 	 */
 	static boolean checkRoyalFlush(int [] gezogeneKarten)
 	{
-		int[] gezogeneNummern = new int[5];
+		int[] gezogeneNummern = new int[gezogeneKarten.length];
 		// Bedingung wird erst ausgeführt, wenn gezogeneKarten ein StraightFlush ergeben
 		if(checkStraightFlush(gezogeneKarten))
 		{
@@ -427,11 +427,11 @@ public class PokerTest {
 //		gezogeneKarten[4] = 51;
 		
 		//Full House
-//		gezogeneKarten[0] = 0;
-//		gezogeneKarten[1] = 13;
-//		gezogeneKarten[2] = 26;
-//		gezogeneKarten[3] = 12;
-//		gezogeneKarten[4] = 25;
+//		gezogeneKarten[0] = 11;
+//		gezogeneKarten[1] = 37;
+//		gezogeneKarten[2] = 24;
+//		gezogeneKarten[3] = 15;
+//		gezogeneKarten[4] = 28;
 		
 		//Paar
 //		gezogeneKarten[0] = 0;
@@ -476,7 +476,7 @@ public class PokerTest {
 		//checkFlush(gezogeneKarten);
 		checkRoyalFlush(gezogeneKarten);
 		checkHighestCard(gezogeneKarten);
-		//getValue(poker);
+		getValue(poker);
 		System.out.println(anzahlKarten);
 		System.out.println("Wert der gezogenen Karten: ");
 		for(int i = 0; i<gezogeneKarten.length; i++)
