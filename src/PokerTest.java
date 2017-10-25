@@ -118,9 +118,9 @@ public class PokerTest {
 		// Alle Karttennummern muessen der Groesse nach aufsteigend geordnet sein
 		gezogeneKartenOrdnen(gezogeneNummern);
 		System.out.println("Geordnete Karten: ");
-		for (int i = 0; i < gezogeneNummern.length; i++) {
-			System.out.print(gezogeneNummern[i] + " ");
-		}
+//		for (int i = 0; i < gezogeneNummern.length; i++) {
+//			System.out.print(gezogeneNummern[i] + " ");
+//		}
 		System.out.println();
 		
 		/** Anzahl der Karten in gezogeneNummern die ausschliesslich Zwillinge sind (keine Drillinge/Vierlinge) */
@@ -362,12 +362,12 @@ public class PokerTest {
 		for (int i = 0; i < anz; i++) {
 			arrayfuellen();
 			kartenZiehen();
-			System.out.println("Wert der gezogenen Karten: ");
-			for(int j = 0; j<gezogeneKarten.length; j++)
-			{
-
-				System.out.print(numberKarte(gezogeneKarten[j]) + " ");
-			}
+			//System.out.println("Wert der gezogenen Karten: ");
+//			for(int j = 0; j<gezogeneKarten.length; j++)
+//			{
+//
+//				System.out.print(numberKarte(gezogeneKarten[j]) + " ");
+//			}
 			System.out.println("\n");
 			checkRoyalFlush(gezogeneKarten);
 			checkHighestCard(gezogeneKarten);
@@ -389,10 +389,10 @@ public class PokerTest {
 	
 	public static void main(String[] args)
 	{
-		durchlaufe(100);
-		arrayfuellen();
+		durchlaufe(10);
+//		arrayfuellen();
 //		information();
-		kartenZiehen();
+//		kartenZiehen();
 		
 		//randomNumberundPaar();
 		
@@ -473,17 +473,18 @@ public class PokerTest {
 		//checkFlush(gezogeneKarten);
 		//checkStraight(gezogeneKarten);
 		//checkFlush(gezogeneKarten);
-		checkRoyalFlush(gezogeneKarten);
-		checkHighestCard(gezogeneKarten);
-		getValue(poker);
-		System.out.println(anzahlKarten);
-		System.out.println("Wert der gezogenen Karten: ");
-		for(int i = 0; i<gezogeneKarten.length; i++)
-		{
-
-			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
-		}
-		System.out.println("\n");
-		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
+		
+//		checkRoyalFlush(gezogeneKarten);
+//		checkHighestCard(gezogeneKarten);
+//		getValue(poker);
+//		System.out.println(anzahlKarten);
+//		System.out.println("Wert der gezogenen Karten: ");
+//		for(int i = 0; i<gezogeneKarten.length; i++)
+//		{
+//
+//			System.out.print(numberKarte(gezogeneKarten[i]) + " ");
+//		}
+//		System.out.println("\n");
+//		checkPaarTrippleVierlingFullHouse(gezogeneKarten);
 	}
 }
