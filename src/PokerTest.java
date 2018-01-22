@@ -1,5 +1,7 @@
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import model.DB_Manager;
 
@@ -488,9 +490,9 @@ public class PokerTest {
 		System.out.println("Die Anzahl der StraightFlushs bei " + anz + " Durchläufen ist " + anzStraightFlush + " Relative Häufigkeit "  + (anzStraightFlush*100.0)/anz + "%");
 		System.out.println("Die Anzahl der RoyalFlushs bei " + anz + " Durchläufen ist " + anzRoyalFlush + " Relative Häufigkeit "  + (anzRoyalFlush*100.0)/anz + "%");
 
-		DB_Manager.AddResult(beginn.getTime(), ende.getTime(), UserID, anzPair, anzTripple, anzFourOfAKind, anzFullHouse, anzFlush, anzStraight, anzStraightFlush, anzRoyalFlush);
+		DB_Manager.AddResult(beginn, ende, UserID, anzPair, anzTripple, anzFourOfAKind, anzFullHouse, anzFlush, anzStraight, anzStraightFlush, anzRoyalFlush);
 	}
-
+	
 	public static void UserErstellen()
 	{
 		DB_Manager.UserErstellen(UserName);

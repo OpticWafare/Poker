@@ -18,7 +18,7 @@ public class JUNIT_Test_Poker {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-
+	
 	@Before
 	public void setUp() throws Exception {
 	PokerTest.anzPair = 0;

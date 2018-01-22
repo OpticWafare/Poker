@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +13,10 @@ import java.sql.Timestamp;
 public class DB_Manager {
 
 	private static Connection con;
-	private static String pfad = "C:\\Users\\user\\Desktop\\USB Update 15.11.16\\"
-			+ "USB Update 14.6.16\\USB Uptate 19.12.15\\USB ganz neu\\workspace\\Poker\\" + "Datenbank.db"; 
+	private static String server =  "localhost";
+	private static String dbname = "pokerstatistik";
+	private static String pfad = server+"/"+dbname+"?user=root&password="; 
+	//private static String prfadSQLite = "";
 	private static PreparedStatement UserErstellen;
 	private static PreparedStatement ResultErstellen;
 	private static PreparedStatement AusgabeResults;
@@ -22,7 +25,7 @@ public class DB_Manager {
 		if(con == null)
 		{
 			try {
-				con = DriverManager.getConnection("jdbc:sqlite:" + pfad);
+				con = DriverManager.getConnection("jdbc:mysql://" + pfad);
 				UserErstellen = getCon().prepareStatement("insert into User(userName) values (?)");
 				ResultErstellen = getCon().prepareStatement("insert into Results values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			} catch (SQLException e) {
@@ -33,27 +36,27 @@ public class DB_Manager {
 		return con;
 	}
 
-	/*public static void createDatabase()
+	public static void createDatabase()
 	{
 		try {
 			Statement stm = getCon().createStatement();
-			stm.execute("create database Poker");
+			stm.execute("create if not exists database "+dbname);
 			Statement stm1 = getCon().createStatement();
-			stm1.execute("use Poker");
+			stm1.execute("use " + dbname);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	public static void createTables()
 	{
 		try {
 			Statement stm = getCon().createStatement();
 			stm.execute("create table if not exists User("
-					+ "userID integer primary key autoincrement,"
+					+ "userID int primary key auto_increment,"
 					+ "userName varchar(50) NOT NULL,"
-					+ "userRegistrationDate date NOT NULL default current_timestamp)");
+					+ "userRegistrationDate datetime NOT NULL default current_timestamp)");
 			stm.execute("create table if not exists Results("
 					+ "beginDateTimeOfTest datetime,"
 					+ "endDateTimeOfTest datetime,"
@@ -66,8 +69,9 @@ public class DB_Manager {
 					+ "nrStraight int NOT NULL,"
 					+ "nrStraightFlush int NOT NULL,"
 					+ "nrRoyalFlush int NOT NULL,"
-					+ "primary key(beginDateTimeOfTest, endDateTimeOfTest)"
-					+ "foreign key(userID) references User(userID))");
+					+ "primary key(beginDateTimeOfTest, endDateTimeOfTest))");
+//					+ "foreign key(userID) references User(userID))");
+			stm.execute("alter table Results add foreign key (userID) references User(UserID)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,17 +109,17 @@ public class DB_Manager {
 			UserErstellen.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();;
 		}
 	}
 	
-	public static void AddResult(long beginTimeOfTest, long endTimeOfTest, int UserID,  int nrPairs, int nrTripples,
+	public static void AddResult(Timestamp beginTimeOfTest, Timestamp endTimeOfTest, int UserID,  int nrPairs, int nrTripples,
 			int nrFourOfaKind, int nrFullHouse, int nrFlush, int nrStraight,  int nrStraightFlush, int nrRoyalFlush)
 	{
 		getCon();
 		try {
-			ResultErstellen.setLong(1, beginTimeOfTest);
-			ResultErstellen.setLong(2, endTimeOfTest);
+			ResultErstellen.setTimestamp(1, beginTimeOfTest);
+			ResultErstellen.setTimestamp(2, endTimeOfTest);
 			ResultErstellen.setInt(3, UserID);
 			ResultErstellen.setInt(4, nrPairs);
 			ResultErstellen.setInt(5, nrTripples);
@@ -143,10 +147,10 @@ public class DB_Manager {
 			while(rs.next())
 			{
 				System.out.println("----------------------------------------------------------");
-				Timestamp ts = new Timestamp(rs.getLong(1));
-				Timestamp ts1 = new Timestamp(rs.getLong(2));
-				System.out.println("Beginnzeit: "  + ts.toLocalDateTime());
-				System.out.println("Endzeit: " + ts1.toLocalDateTime());
+				Timestamp ts1 = rs.getTimestamp(1);
+				Timestamp ts2 = rs.getTimestamp(2);
+				System.out.println("Beginnzeit: "  + ts1.toLocalDateTime());
+				System.out.println("Endzeit: " + ts2.toLocalDateTime());
 				System.out.println("UserID: " + rs.getInt(3));
 				System.out.println("Anzahl der Paare: " + rs.getInt(4));
 				System.out.println("Anzahl der Drillinge: " + rs.getInt(5));
