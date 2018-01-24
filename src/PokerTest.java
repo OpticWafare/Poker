@@ -1,9 +1,10 @@
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 
 import model.DB_Manager;
+import model.ORM_Manager;
+import model.Results_Orm;
+import model.User_Orm;
 
 
 public class PokerTest {
@@ -458,7 +459,7 @@ public class PokerTest {
 					+ gezogeneKarten[2] + " " + gezogeneKarten[3] + " " + gezogeneKarten[4]);}
 	}
 
-	static void durchlaufe() {
+	/*static void durchlaufe() {
 		int anz = 100000;
 		Timestamp beginn = new Timestamp(System.currentTimeMillis());
 		for (int i = 0; i < anz; i++) {
@@ -492,16 +493,64 @@ public class PokerTest {
 
 		DB_Manager.AddResult(beginn, ende, UserID, anzPair, anzTripple, anzFourOfAKind, anzFullHouse, anzFlush, anzStraight, anzStraightFlush, anzRoyalFlush);
 	}
-	
+	*/
 	public static void UserErstellen()
 	{
 		DB_Manager.UserErstellen(UserName);
 	}
 	
+	
+	
+	static void durchlaufe() {
+		int anz = 100000;
+		Timestamp beginn = new Timestamp(System.currentTimeMillis());
+		beginn.toLocalDateTime();
+		for (int i = 0; i < anz; i++) {
+			arrayfuellen();
+			kartenZiehen();
+			anzahlKarten = anzahlKarteProFarbe * anzahlFarben;
+			// System.out.println("Wert der gezogenen Karten: ");
+			// for(int j = 0; j<gezogeneKarten.length; j++)
+			// {
+			//
+			// System.out.print(numberKarte(gezogeneKarten[j]) + " ");
+			// }
+			if(textAusgabe == true){
+				System.out.println("\n");}
+			checkRoyalFlush(gezogeneKarten);
+			checkHighestCard(gezogeneKarten);
+			// getValue(poker);
+			checkPaarTrippleVierlingFullHouse(gezogeneKarten);
+		}
+		Timestamp ende = new Timestamp(System.currentTimeMillis());
+		ende.toLocalDateTime();
+		
+		System.out.println();
+		System.out.println("Die Anzahl der Paare bei " + anz + " Durchläufen ist " + anzPair + " Relative Häufigkeit "  + (anzPair*100.0)/anz + "%");
+		System.out.println("Die Anzahl der Drillinge bei " + anz + " Durchläufen ist " + anzTripple + " Relative Häufigkeit "  + (anzTripple*100.0)/anz + "%");
+		System.out.println("Die Anzahl der Vierlinge bei " + anz + " Durchläufen ist " + anzFourOfAKind + " Relative Häufigkeit "  + (anzFourOfAKind*100.0)/anz + "%");
+		System.out.println("Die Anzahl der FullHouses bei " + anz + " Durchläufen ist " + anzFullHouse + " Relative Häufigkeit "  + (anzFullHouse*100.0)/anz + "%");
+		System.out.println("Die Anzahl der Straßen bei " + anz + " Durchläufen ist " + anzStraight + " Relative Häufigkeit "  + (anzStraight*100.0)/anz + "%");
+		System.out.println("Die Anzahl der Flushs bei " + anz + " Durchläufen ist " + anzFlush + " Relative Häufigkeit "  + (anzFlush*100.0)/anz + "%");
+		System.out.println("Die Anzahl der StraightFlushs bei " + anz + " Durchläufen ist " + anzStraightFlush + " Relative Häufigkeit "  + (anzStraightFlush*100.0)/anz + "%");
+		System.out.println("Die Anzahl der RoyalFlushs bei " + anz + " Durchläufen ist " + anzRoyalFlush + " Relative Häufigkeit "  + (anzRoyalFlush* 100.0)/anz + "%");
+
+		Results_Orm results = new Results_Orm(beginn, ende, UserID, anzPair, anzTripple, anzFourOfAKind, anzFlush, anzStraight, anzStraightFlush, anzRoyalFlush, anzFullHouse); 
+		
+		Timestamp Registrationdate = new Timestamp(System.currentTimeMillis());
+		Registrationdate.toLocalDateTime();
+		User_Orm user = new User_Orm(UserID, UserName, Registrationdate);
+	
+		try {
+			ORM_Manager.con(user, results);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
-		UserErstellen();
+		//UserErstellen();
 		durchlaufe();
-		DB_Manager.AusgabeResults();
+//	DB_Manager.AusgabeResults();
 		// arrayfuellen();
 		// information();
 		// kartenZiehen();
